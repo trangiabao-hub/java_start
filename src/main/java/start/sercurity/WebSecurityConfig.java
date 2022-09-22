@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import start.exception.AuthenException;
+import start.service.UserSecurityService;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +25,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     Filter authenFilter;
 
+    @Autowired
+    UserSecurityService userSecurityService;
 
+    @Autowired
+    AuthenException authenException;
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
     @Override
@@ -39,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userSecurityService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userSecurityService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -51,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login","/signup","/swagger-ui/index.html", "/exams","/services","/checktoken/*").permitAll()
                 .anyRequest().permitAll()
                 .and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(null)
+                .exceptionHandling().authenticationEntryPoint(authenException)
                 .and()
                 .addFilterBefore(authenFilter, UsernamePasswordAuthenticationFilter.class);
     }
