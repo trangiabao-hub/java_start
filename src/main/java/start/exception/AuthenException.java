@@ -19,12 +19,12 @@ public class AuthenException implements AuthenticationEntryPoint {
     @Autowired
     ResponseHandler responseHandler;
 
-//    @Autowired
-//    @Qualifier("handlerExceptionResolver")
-//    private HandlerExceptionResolver resolver;
+    @Autowired
+    @Qualifier("handlerExceptionResolver")
+    private HandlerExceptionResolver resolver;
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        throw new NotAllowException("Not allow to use this function!");
+        resolver.resolveException(request, response, null, new NotAllowException("Access Deny"));
     }
 }
