@@ -1,35 +1,34 @@
-package start.entity;
+package start.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import start.entity.User;
 
-import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
 
-@Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
-    private String username;
-    private String password;
+public class UserSecurityDTO implements UserDetails {
+    User user;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role.getName()));
-        return authorities;
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return user.getUsername();
     }
 
     @Override

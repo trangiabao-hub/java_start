@@ -10,7 +10,7 @@ public class AuthenPath {
 
     public AuthenPath(){
         listPathAuthen = new ArrayList<>();
-        listPathAuthen.add("/authen");
+        listPathAuthen.add("/admin-only");
     }
 
     public boolean isAuthen(String path){

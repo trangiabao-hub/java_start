@@ -1,26 +1,26 @@
-package start.sercurity.jwt;
+package start.utils;
 
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
-import start.dto.UserSecurity;
+import start.dto.UserSecurityDTO;
+import start.entity.User;
 
 import java.util.Date;
 
 @Component
 public class TokenHandler {
-
-    private final String SECRET_KEY = "PRODUCT_MANAGER";
-    // 1s => 1000ms
-//    private final long EXPIRATION = 1 * 60 * 1000;
-    private final long EXPIRATION = 1 * 60 * 60 * 1000;
+    private final String SECRET_KEY = "TRAN_GIA_BAO";
+//    1s => 1000ms
+//    private final UUID EXPIRATION = 1 * 60 * 1000;
+    private final long EXPIRATION = 1 * 24 * 60 * 60 * 1000;
 
     // create token (encode)
-    public String generateToken(UserSecurity userSecurity) {
+    public String generateToken(User user) {
         Date now = new Date(); // get current time
         Date expirationDate = new Date(now.getTime() + EXPIRATION);
 
         String token = Jwts.builder()
-                .setSubject(userSecurity.getUsername())
+                .setSubject(user.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
@@ -28,7 +28,7 @@ public class TokenHandler {
         return token;
     }
 
-    public String generateRefreshToken(UserSecurity userSecurity) {
+    public String generateRefreshToken(UserSecurityDTO userSecurity) {
         Date now = new Date(); // get current time
         Date expirationDate = new Date(now.getTime() + EXPIRATION * 24 * 30);
 //        Date expirationDate = new Date(now.getTime() + EXPIRATION * 2);
