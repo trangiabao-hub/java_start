@@ -20,6 +20,7 @@ public class TestController {
     }
 
     @GetMapping("all-user")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity get(){
         return responseHandler.response(200, "Successfully get data!", null);
     }

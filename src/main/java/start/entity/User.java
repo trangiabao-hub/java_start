@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import start.enums.RoleEnum;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,12 +24,12 @@ public class User implements UserDetails {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    Role role;
+    RoleEnum role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role.getName()));
+        authorities.add(new SimpleGrantedAuthority(this.role.toString()));
         return authorities;
     }
 
